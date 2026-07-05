@@ -67,3 +67,37 @@ When a custom agent's persona instructions are loose/flexible and a
 linked skill requires strict/exact output, lightweight models may
 prioritize the persona over the skill. Write agent instructions with
 explicit, non-negotiable language when exact skill compliance matters.
+
+## Final Conclusion (my-agent-skills project)
+
+### What this project proved
+1. SKILL.md works: exact-format instructions are correctly discovered
+   and executed by Copilot, both via explicit call (/hello-skill) and
+   natural language trigger.
+2. Custom Agent (.agent.md) works: persona + tool restriction (tools: [])
+   is correctly applied.
+3. Custom instructions (copilot-instructions.md) use on-demand loading,
+   not always-on injection - simple tasks may skip reading it entirely.
+4. Prompt Files (.prompt.md) can chain to a specific custom agent via
+   the `agent:` field, and support parameterized input via ${input:x}.
+
+### What this project revealed about risk
+Stacking multiple customization layers (instructions + skill + agent +
+prompt) in one small project increases the chance of conflicting rules.
+Example: a loosely-worded agent persona overrode a skill's strict format
+requirement (Attempt 1-3 failure). Fixing the agent to be strict then
+caused it to also suppress prompt file input (the "Danny" name was
+dropped), because the agent's "no other words" rule blocked everything
+except the skill's fixed text.
+
+### Decision going forward
+For real team training content, this project's scope will NOT be
+reused. A new project will focus narrowly on:
+- SKILL.md (primary, as requested by manager)
+- One simple .agent.md (secondary, kept independent, not tightly
+  coupled to strict skill output)
+
+Custom instructions and prompt files are deprioritized for now -
+useful to know they exist, but not required for the training goal.
+
+### Status: Learning experiment complete. Not used as production reference.
